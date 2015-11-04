@@ -1,0 +1,13 @@
+flameo --cope=all_BR_gfeat_0mm_w_blinks_cope3_cope_avg_subject-rh.nii.gz --varcope=all_BR_gfeat_0mm_w_blinks_cope3_varcope_avg_subject-rh.nii.gz --mask=br_mask-rh.nii.gz --dm=bh_2_flame2.mat --tc=bh_2_flame2.con --cs=bh_2_flame2.grp --runmode=flame2
+
+flameo --cope=all_BR_gfeat_0mm_w_blinks_cope3_cope_avg_subject-rh.nii.gz --mask=br_mask-rh.nii.gz --dm=bh_2_flame2.mat --tc=bh_2_flame2.con --cs=bh_2_flame2.grp --runmode=flame2
+
+
+flameo --cope=all_BR_gfeat_0mm_w_blinks_cope3_cope_avg_subject-rh.nii.gz --mask=br_mask-rh.nii.gz --dm=bh_2_flame2.mat --tc=bh_2_flame2.con --cs=bh_2_flame2.grp --runmode=flame1 --logdir=flame1.rh
+flameo --cope=all_BR_gfeat_0mm_w_blinks_cope3_cope_avg_subject-lh.nii.gz --mask=br_mask-lh.nii.gz --dm=bh_2_flame2.mat --tc=bh_2_flame2.con --cs=bh_2_flame2.grp --runmode=flame1 --logdir=flame1.lh
+
+mri_convert all_stim_on_mapper_cope_0mm_avg_subject-rh.mgz all_stim_on_mapper_cope_0mm_avg_subject-rh.nii.gz &
+mri_convert all_stim_on_mapper_cope_0mm_avg_subject-lh.mgz all_stim_on_mapper_cope_0mm_avg_subject-lh.nii.gz
+
+flameo --cope=all_stim_on_mapper_cope_0mm_avg_subject-rh.nii.gz --mask=br_mask-rh.nii.gz --dm=bh_2_flame2.mat --tc=bh_2_flame2.con --cs=bh_2_flame2.grp --runmode=flame1 --logdir=stim_flame1.rh &
+flameo --cope=all_stim_on_mapper_cope_0mm_avg_subject-lh.nii.gz --mask=br_mask-lh.nii.gz --dm=bh_2_flame2.mat --tc=bh_2_flame2.con --cs=bh_2_flame2.grp --runmode=flame1 --logdir=stim_flame1.lh
