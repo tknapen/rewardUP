@@ -26,10 +26,10 @@ this_project_folder = '/home/shared/BR/'
 
 sys.path.append( os.environ['ANALYSIS_HOME'] )
 
+import Tools
 from Tools.Sessions import *
 from Tools.Subjects.Subject import *
 # from Tools.Run import *
-import Tools
 import Tools.Run
 from Tools.Projects.Project import *
 

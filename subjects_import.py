@@ -62,7 +62,7 @@ for which_subject in subject_intials:
 		sessionDate = datetime.date(2015, 11, 04)
 		sj_session = 'OC_041115'
 	
-		presentSession = BRTransSession.BRTransSession(sessionID, sessionDate, presentProject, presentSubject)
+		presentSession = RewardUPSession.RewardUPSession(sessionID, sessionDate, presentProject, presentSubject)
 	
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
