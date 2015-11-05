@@ -75,9 +75,9 @@ for which_subject in subject_intials:
 	
 		runBRArray = [
 			# B0 session 1:
-			{'ID' : 1, 'scanType': 'inplane_anat', 'condition': 'B0_anat_mag', 'session' : 1,
+			{'ID' : 1, 'scanType': 'field_map', 'condition': 'B0_anat_mag', 'session' : 1,
 				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri', 'Olympia_Colizoli_WIP_B0_SENSE_5_1s005a001x1.nii.gz' ),},
-			{'ID' : 2, 'scanType': 'inplane_anat', 'condition': 'B0_anat_phs', 'session' : 1,
+			{'ID' : 2, 'scanType': 'field_map', 'condition': 'B0_anat_phs', 'session' : 1,
 				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri', 'Olympia_Colizoli_WIP_B0_SENSE_5_1s005a001x2.nii.gz' ),},
 			# Mapper session 1:
 			{'ID' : 3, 'scanType': 'epi_bold', 'condition': 'lum_mapper', 'session' : 1,

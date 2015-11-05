@@ -11,6 +11,7 @@ To run this script headlessly and hopefully avoiding X server errors in the proc
 
 import os, sys, datetime
 import subprocess, logging
+import shutil
 
 import scipy as sp
 import scipy.stats as stats
@@ -87,48 +88,54 @@ def run_subject(sj, run_array, session_date, project):
 	
 	# preprocessing:
 	# --------------
-	session.setupFiles(rawBase = '', process_eyelink_file = True)
-	session.import_edf_data()
-	session.edf_prepocessing_report()
+	# session.setupFiles(rawBase = '', process_eyelink_file = False)
+	# session.import_edf_data()
+	# session.edf_prepocessing_report()
 	# session.mapper_events()
-	session.collect_pupil_data_from_hdf()
+	# session.collect_pupil_data_from_hdf()
 	# session.button_press_analysis()
 
 	# registration now done by hand, do NOT (!) run this again..
-	session.registerSession()
+	# session.registerSession(prepare_register = True)
 
 	# B0 unwarping?:
 	# --------------
 	# Not now, not yet...
-	session.B0_unwarping(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], wfs=14.256, etl=41.0, acceleration=3.0)
-	session.grab_B0_residuals()
-	session.motionCorrectFunctionals(postFix=['B0'], further_args = ' -dof 7 ')
-	session.bet_example_func()
+	# session.B0_unwarping(conditions=['ori_mapper', 'lum_mapper'], wfs=14.256, etl=41.0, acceleration=3.0) # 'UP', 'P', 
+	# session.grab_B0_residuals()
+	# session.motionCorrectFunctionals(postFix=['B0'], further_args = ' -dof 7 ')
+	# session.bet_example_func()
+	session.orientation_events_from_pickle()
+	# session.reward_events_from_pickle()
 	
-	# create cortex / LC masks:
-	# -------------------------
-	# not all subjects have retinotopy:
-	session.fsaverage_labels_to_masks()
-	session.createMasksFromFreeSurferLabels(labelFolders = [''], annot = False, annotFile = 'aparc.a2009s', cortex=False)
-	session.createMasksFromFreeSurferLabels(labelFolders = ['V1_ecc'], annot = False, annotFile = 'aparc.a2009s', cortex=False)
+	# 
+
+	# # create cortex / LC masks:
+	# # -------------------------
+	# # not all subjects have retinotopy:
+	# session.fsaverage_labels_to_masks()
+	# session.createMasksFromFreeSurferLabels(labelFolders = [''], annot = False, annotFile = 'aparc.a2009s', cortex=False)
+	# session.createMasksFromFreeSurferLabels(labelFolders = ['V1_ecc'], annot = False, annotFile = 'aparc.a2009s', cortex=False)
 	# session.createMasksFromFreeSurferLabels(labelFolders = ['retmap_PRF'], annot = False, annotFile = 'aparc.a2009s', cortex=False)
 	# session.createMasksFromFreeSurferLabels(labelFolders = ['retmap_PRF', 'V1_ecc'], annot = True, annotFile = 'aparc.a2009s', cortex=False)
-	session.createMasksFromFreeSurferAseg(asegFile = 'aparc.a2009s+aseg', which_regions = ['Brain-Stem']) # 'Putamen', 'Caudate', 'Pallidum', 'Hippocampus', 'Amygdala', 'Accumbens', 'Cerebellum_Cortex', 'Thalamus_Proper', 'Thalamus', 'VentralDC',
-	session.createMasksFromFSLAtlases(threshold = 0.95)
-	session.remove_empty_masks()
+	# session.createMasksFromFreeSurferAseg(asegFile = 'aparc.a2009s+aseg', which_regions = ['Brain-Stem']) # 'Putamen', 'Caudate', 'Pallidum', 'Hippocampus', 'Amygdala', 'Accumbens', 'Cerebellum_Cortex', 'Thalamus_Proper', 'Thalamus', 'VentralDC',
+	# session.createMasksFromFSLAtlases(threshold = 0.95)
+	# session.remove_empty_masks()
 	# session.createMasksFromFreeSurferLabels(labelFolders = ['V1_ecc'], annot = False, annotFile = 'aparc.a2009s', cortex=False)
 		
 	# retroicor:
 	# ----------
-	session.retroicorFSL(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=['B0', 'mcf'], threshold=1.5, nr_dummies=8, sample_rate=500, gradient_direction='y', thisFeatFile='/home/shared/Niels_UvA/Retmap_UvA/analysis/feat_retro/retroicor_design.fsf', prepare=True, run=False)
-	session.retroicorFSL(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=['B0', 'mcf'], threshold=1.5, nr_dummies=8, sample_rate=500, gradient_direction='y', thisFeatFile='/home/shared/Niels_UvA/Retmap_UvA/analysis/feat_retro/retroicor_design.fsf', prepare=False, run=True)
-	# # # session.retroicorFSL(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=[], threshold=1.5, nr_dummies=8, sample_rate=500, gradient_direction='y', thisFeatFile='/home/shared/Niels_UvA/Retmap_UvA/analysis/feat_retro/retroicor_design.fsf', prepare=True, run=False)
-	session.grab_retroicor_residuals(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=['B0', 'mcf'])
+	# session.retroicorFSL(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=['B0', 'mcf'], threshold=1.85, nr_dummies=8, sample_rate=500, gradient_direction='y', thisFeatFile='/home/shared/Niels_UvA/Retmap_UvA/analysis/feat_retro/retroicor_design.fsf', prepare=True, run=False)
+	# session.retroicorFSL(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=['B0', 'mcf'], threshold=1.85, nr_dummies=8, sample_rate=500, gradient_direction='y', thisFeatFile='/home/shared/Niels_UvA/Retmap_UvA/analysis/feat_retro/retroicor_design.fsf', prepare=False, run=True)
+	# session.grab_retroicor_residuals(conditions=['UP', 'P', 'ori_mapper', 'lum_mapper'], postFix=['B0', 'mcf'])
+
+	#
+
 	
 	# # rescale:
 	# # --------
-	# session.rescaleFunctionals(operations = ['sgtf'], funcPostFix = ['mcf'], mask_file = None)
-	# session.rescaleFunctionals(operations = ['sgtf'], funcPostFix = ['mcf', 'phys'], mask_file = None)
+	# session.rescaleFunctionals(operations = ['sgtf'], funcPostFix = ['B0','mcf','phys','add'], mask_file = None)
+	# session.rescaleFunctionals(operations = ['percentsignalchange'], funcPostFix = ['B0','mcf','phys','add','sgtf'], mask_file = None)
 	# session.rescaleFunctionals(operations = ['sgtf'], funcPostFix = ['mcf', 'phys', 'add'], mask_file = None)
 	# session.rescaleFunctionals(operations = ['zscore'], funcPostFix = ['mcf', 'phys', 'add', 'sgtf'], mask_file = None)
 	# session.rescaleFunctionals(operations = ['zscore'], funcPostFix = ['mcf', 'sgtf'], mask_file = None)
